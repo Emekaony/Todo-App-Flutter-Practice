@@ -6,13 +6,29 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  void buttonPressed() {
-    if (kDebugMode) {
-      print("Button pressed");
-    }
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  List<String> todos = [
+    "Buy groceries",
+    "Finish Flutter project",
+    "Read a chapter of a book",
+    "Go for a 30-minute walk",
+    "Reply to emails",
+    "Practice coding for 1 hour",
+    "Plan next week's schedule",
+    "Watch a tech talk or tutorial",
+  ];
+
+  void buttonPressed(int index) {
+    setState(() {
+      todos.removeAt(index);
+    });
   }
 
   @override
@@ -32,7 +48,10 @@ class MyApp extends StatelessWidget {
           padding: EdgeInsets.all(10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
-            children: [Todo(onPress: buttonPressed)],
+            children: [
+              for (int i = 0; i < todos.length; i++)
+                Todo(item: todos[i], index: i, onPress: () => buttonPressed(i)),
+            ],
           ),
         ),
       ),
